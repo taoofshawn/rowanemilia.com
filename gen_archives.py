@@ -2,21 +2,20 @@
 """Generate per-month archive pages for Hugo based on actual posts."""
 import os
 from datetime import datetime
-from typing import List, Tuple, Set
 
 ARCHIVES_DIR: str = "content/archives"
 
 
-def get_months_with_posts() -> List[Tuple[int, int]]:
+def get_months_with_posts() -> list[tuple[int, int]]:
     """Get sorted list of (year, month) tuples that have posts."""
-    months: Set[Tuple[int, int]] = set()
+    months: set[tuple[int, int]] = set()
     posts_dir: str = "content/posts"
     for root, _dirs, files in os.walk(posts_dir):
         for f in files:
             if not f.endswith('.md'):
                 continue
             # Parse date from path: content/posts/YYYY/MM/filename.md
-            parts: List[str] = os.path.normpath(root).split(os.sep)
+            parts: list[str] = os.path.normpath(root).split(os.sep)
             if len(parts) >= 2:
                 year_str: str = parts[-2]
                 month_str: str = parts[-1]
@@ -71,9 +70,9 @@ layout: archive
     print(f"  Created: {year}/{month:02d} - {month_name}")
 
 
-def generate_archive_files(months: List[Tuple[int, int]]) -> None:
+def generate_archive_files(months: list[tuple[int, int]]) -> None:
     """Create _index.md files for each month and year."""
-    years: List[int] = sorted(set(m[0] for m in months), reverse=True)
+    years: list[int] = sorted(set(m[0] for m in months), reverse=True)
 
     _remove_old_archives()
 
@@ -85,7 +84,7 @@ def generate_archive_files(months: List[Tuple[int, int]]) -> None:
 
 
 def main() -> None:
-    months: List[Tuple[int, int]] = get_months_with_posts()
+    months: list[tuple[int, int]] = get_months_with_posts()
     print(f"Found {len(months)} months with posts")
     for y, m in months:
         print(f"  {y}/{m:02d}")
