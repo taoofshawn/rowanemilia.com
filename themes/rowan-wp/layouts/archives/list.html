@@ -1,18 +1,57 @@
 {{ define "main" }}
 <h2>{{ .Title }}</h2>
 
-{{ .Content }}
-
-{{ range (.Site.RegularPages.GroupByDate "January 2006") }}
-<h3 id="{{ .Key | urlize }}">{{ .Key }}</h3>
-<ul class="archive-list">
-{{ range .Pages }}
-<li>
-	<strong><a href="{{ .RelPermalink }}">{{ .Title }}</a></strong>
-	<span class="post-date">({{ .Date.Format "January 2, 2006" }})</span>
-</li>
-{{ end }}
-</ul>
+{{ if .Params.month }}
+  {{/* Per-month archive page */}}
+  {{ $year := .Params.year }}
+  {{ $month := .Params.month }}
+  <ul class="archive-list">
+  {{ range .Site.RegularPages }}
+    {{ if and (eq (.Date.Format "2006") (string $year)) (eq (.Date.Format "01") (string $month)) }}
+    <li>
+      <strong><a href="{{ .RelPermalink }}">{{ .Title }}</a></strong>
+      <span class="post-date">({{ .Date.Format "January 2, 2006" }})</span>
+      <div class="entry">
+        {{ .Content }}
+      </div>
+      <p class="postmetadata"> </p>
+    </li>
+    {{ end }}
+  {{ end }}
+  </ul>
+{{ else if .Params.year }}
+  {{/* Per-year archive page */}}
+  {{ $year := .Params.year }}
+  <ul class="archive-list">
+  {{ range .Site.RegularPages }}
+    {{ if eq (.Date.Format "2006") (string $year) }}
+    <li>
+      <strong><a href="{{ .RelPermalink }}">{{ .Title }}</a></strong>
+      <span class="post-date">({{ .Date.Format "January 2, 2006" }})</span>
+      <div class="entry">
+        {{ .Content }}
+      </div>
+      <p class="postmetadata"> </p>
+    </li>
+    {{ end }}
+  {{ end }}
+  </ul>
+{{ else }}
+  {{/* Top-level archives overview - list all months */}}
+  {{ range (.Site.RegularPages.GroupByDate "January 2006") }}
+  {{ if and (ne .Key "January 0001") (gt (len .Pages) 0) }}
+  {{ $link := (index .Pages 0).Date.Format "/2006/01" }}
+  <h3><a href="{{ "archives" | relURL }}{{ $link }}">{{ .Key }}</a> ({{ len .Pages }})</h3>
+  <ul class="archive-list">
+  {{ range .Pages }}
+  <li>
+    <strong><a href="{{ .RelPermalink }}">{{ .Title }}</a></strong>
+    <span class="post-date">({{ .Date.Format "January 2, 2006" }})</span>
+  </li>
+  {{ end }}
+  </ul>
+  {{ end }}
+  {{ end }}
 {{ end }}
 
 {{ end }}

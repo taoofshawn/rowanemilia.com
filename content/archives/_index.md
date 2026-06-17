@@ -1,4 +1,5 @@
 ---
 title: "Archives"
-slug: "archives"
 ---
+
+Browse posts by month.
