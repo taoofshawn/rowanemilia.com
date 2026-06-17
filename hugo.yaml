@@ -1,0 +1,23 @@
+baseURL: "http://localhost:1313/"
+locale: "en-US"
+title: "RowanEmilia.com"
+theme: "rowan-wp"
+paginate: 5
+
+params:
+  description: "A chronicle of Rowan"
+  copyright: "Copyrights © RowanEmilia.com"
+
+taxonomies:
+  category: categories
+
+permalinks:
+  posts: "/:year/:month/:day/:slug/"
+
+markup:
+  goldmark:
+    renderer:
+      unsafe: true
+
+ignoreLogs:
+  - 'warning-goldmark-raw-html'

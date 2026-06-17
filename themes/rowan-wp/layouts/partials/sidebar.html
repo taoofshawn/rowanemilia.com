@@ -1,0 +1,28 @@
+<div id="sidebar">
+	<div id="sidebar-left">
+		<ul>
+			<li><h2>Menu</h2>
+			<ul id="menu">
+				<li{{ if .IsHome }} class="current_page_item"{{ end }}><a href="{{ "" | relURL }}" title="Home">Home</a></li>
+				<li{{ if eq .RelPermalink "/about/" }} class="current_page_item"{{ end }}><a href="{{ "about" | relURL }}">About Rowan</a></li>
+				<li{{ if eq .RelPermalink "/s/" }} class="current_page_item"{{ end }}><a href="{{ "s" | relURL }}">Photo Gallery</a></li>
+				<li{{ if eq .RelPermalink "/videos/" }} class="current_page_item"{{ end }}><a href="{{ "videos" | relURL }}">Random Videos</a></li>
+			</ul>
+			</li>
+			<li id="categories-293874381" class="widget widget_categories"><h2 class="widgettitle">Categories</h2>
+			<ul>
+				{{ range $name, $taxonomy := .Site.Taxonomies.categories }}
+				<li class="cat-item"><a href="{{ "categories/" | relURL }}{{ $name }}">{{ $name | humanize | title }}</a> ({{ $taxonomy.Count }})</li>
+				{{ end }}
+			</ul>
+			</li>
+			<li id="archives-2" class="widget widget_archive"><h2 class="widgettitle">Archives</h2>
+			<ul>
+				{{ range (.Site.RegularPages.GroupByDate "January 2006") }}
+				<li><a href="{{ "archives" | relURL }}#{{ .Key | urlize }}">{{ .Key }}</a></li>
+				{{ end }}
+			</ul>
+			</li>
+		</ul>
+	</div>
+</div>

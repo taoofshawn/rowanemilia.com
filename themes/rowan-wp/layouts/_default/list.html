@@ -1,0 +1,20 @@
+{{ define "main" }}
+<h2>{{ .Title }}</h2>
+
+{{ .Content }}
+
+<ul class="archive-list">
+{{ range .Paginator.Pages }}
+{{ $comments := index (index hugo.Data "comments") (string .Params.wpid) | default slice }}
+<li>
+	<h2><a href="{{ .RelPermalink }}" rel="bookmark" title="Permanent Link to {{ .Title }}">{{ .Title }}</a></h2>
+	<small>{{ .Date.Format "January 2, 2006" }} | {{ range $i, $c := .Params.categories }}{{ if $i }}, {{ end }}<a href="{{ "categories/" | relURL }}{{ $c | urlize }}" rel="category tag">{{ $c | humanize | title }}</a>{{ end }} | {{ if $comments }}{{ len $comments }} Comment{{ if ne (len $comments) 1 }}s{{ end }}{{ else }}No Comments{{ end }}</small>
+</li>
+{{ end }}
+</ul>
+
+<div class="postnav">
+	<div class="alignleft">{{ if .Paginator.HasNext }}<a href="{{ .Paginator.Next.URL }}">&laquo; Older Entries</a>{{ end }}</div>
+	<div class="alignright">{{ if .Paginator.HasPrev }}<a href="{{ .Paginator.Prev.URL }}">Newer Entries &raquo;</a>{{ end }}</div>
+</div>
+{{ end }}

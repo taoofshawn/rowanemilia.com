@@ -1,0 +1,15 @@
+name: "rowan-wp"
+license: "GPL-2.0"
+licenselink: "https://www.gnu.org/licenses/gpl-2.0.html"
+description: "Port of the WordPress diary-lite theme to Hugo"
+homepage: "http://pageblogging.net/2008/09/diary-lite-released.html"
+tags:
+  - two-columns
+  - orange
+  - blue
+features:
+  - blog
+min_version: "0.112.0"
+author:
+  name: "page"
+  homepage: "http://pageblogging.net"

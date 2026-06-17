@@ -1,0 +1,18 @@
+{{ define "main" }}
+<h2>{{ .Title }}</h2>
+
+{{ .Content }}
+
+{{ range (.Site.RegularPages.GroupByDate "January 2006") }}
+<h3 id="{{ .Key | urlize }}">{{ .Key }}</h3>
+<ul class="archive-list">
+{{ range .Pages }}
+<li>
+	<strong><a href="{{ .RelPermalink }}">{{ .Title }}</a></strong>
+	<span class="post-date">({{ .Date.Format "January 2, 2006" }})</span>
+</li>
+{{ end }}
+</ul>
+{{ end }}
+
+{{ end }}

@@ -1,0 +1,206 @@
+/*
+  Theme: rowan-wp (port of diary-lite v2.3.1)
+  Author: page
+  Description: Port of the WordPress diary-lite theme to Hugo
+*/
+
+/* Begin html tags */
+* { margin:0; padding:0; } 
+body {font-size: 62.5%; font-family: 'Lucida Grande', Verdana, Arial, Sans-Serif; background: #F1F0DE; color: #333; margin:10px auto; height:auto;}
+hr{display: none;}
+a{color: #147;text-decoration: none;}
+a:hover {color: #06c;text-decoration: underline;}
+ul{list-style-type: none;}
+h2{font-size:1.5em;}
+h3,h4{font-size:1.1em;font-weight:bold;}
+.clear{clear:both;}
+small{font-size:1em;}
+/* End html tags */
+
+
+/* Begin Structure */
+#header {background: url(/img/header.gif) no-repeat 160px; width: 800px; height:100px; margin:auto; color:#F1E7DB; font-size:1.2em;}
+#content{width:800px;margin:10px auto;font-size:1.2em;display:flex;flex-direction:row-reverse;align-items:flex-start;}
+#maincontent{background:#D9D8A8 url(/img/contentback.gif) repeat-y;width:640px;line-height:1.8em;}
+#sidebar{width:140px;padding:15px 15px 0 0;text-align:right;flex-shrink:0;}
+#footer{background: url(/img/footer.gif) no-repeat 160px;width:600px;height:30px;margin:auto;font-size:1.2em;padding:10px 15px 10px 190px;color:#ccc;}
+/* End Structure */
+
+/* begin header*/
+#header h1{font-size:2em;padding:15px 0 0 340px;}
+#header h1 a{color:#eee;}
+.description{padding:3px 0 0 360px;}
+/* End header*/
+
+
+/* begin maincontent*/
+.topcorner{background: url(/img/topcorner.gif) no-repeat top center;height:12px;}
+.bottomcorner{background: url(/img/bottomcorner.gif) no-repeat top center;height:12px;}
+.contentpadding{padding:0px 20px;}
+#maincontent a:hover{color:#3f4a4d;}
+#maincontent h2 a{color:#58573F;}
+.entry{margin-top:5px;overflow:hidden;}
+
+.entry p {margin-bottom:1em;}
+.entry ol {padding: 0 0 0 35px;}
+.entry ul {list-style-type:none;}
+.entry ul li{padding: 0 0 0 15px;background: url(/img/ul.gif) no-repeat left 10px;}
+.entry img {border:medium none;max-width:590px;height:auto;margin:3px;}
+.entry iframe {max-width:590px;}
+
+.entry blockquote {margin:20px;padding:5px;background:#CBCAA1;overflow:hidden;}
+.postmetadata{padding:1px 5px;margin:0.5em 0 25px;border-left:15px solid #DCDBBF;}
+.postnav{margin:1em 0;}
+/* End maincontent */
+
+/* Begin sidebar */
+#sidebar h2{text-transform:uppercase;font-size:1.1em;color:#A4573A;}
+#sidebar ul ul{margin-bottom:15px;}
+#sidebar ul ul li{margin-bottom:3px;}
+#sidebar ul ul li a{color:#767555;}
+#sidebar .current_page_item a {font-weight:bold;color:#333;}
+/* End sidebar */
+
+/* Begin footer */
+#footer a{color:#ccc;text-decoration: underline;}
+#footer a:hover{text-decoration: none;}
+/* End footer */
+
+/* Begin wp-tags*/
+img.centered {display: block;margin-left: auto;margin-right: auto;}
+img.alignright {padding: 4px;margin: 0 0 2px 7px;display: inline;}
+img.alignleft {padding: 4px;margin: 0 7px 2px 0;display: inline;}
+
+.aligncenter {
+	display: block;
+	margin-left: auto;
+	margin-right: auto;
+}
+
+.alignright {float: right;}
+.alignleft {float: left}
+
+.wp-caption {
+	border: 1px solid #ddd;
+	text-align: center;
+	background-color: #f3f3f3;
+	padding-top: 4px;
+	margin: 10px;
+	-moz-border-radius: 3px;
+	-khtml-border-radius: 3px;
+	-webkit-border-radius: 3px;
+	border-radius: 3px;
+	max-width: 590px;
+}
+
+.wp-caption img {margin: 0;padding: 0;border: 0 none;max-width:100%;}
+
+.wp-caption p.wp-caption-text {
+	font-size: 11px;
+	line-height: 17px;
+	padding: 0 4px 5px;
+	margin: 0;
+}
+/* End wp-tags */
+
+/* Begin comments */
+.message{width:100%;}
+#response{margin-top:2em;}
+.commentlist {list-style-type: none;}
+.commentlist li{list-style:none;}
+.commentlist p{margin:0.5em 0;padding:0.4em;}
+.comment-body{border:1px solid #767555;margin:1em 0;padding:5px;}
+.commentlist .children{margin:0 0 0 25px;}
+.commentlist .children li{margin-left:15px;}
+.backtotop{text-align:right;}
+.commentlist li .comment-meta{float:right;}
+.commentlist li .comment-author{width:40%;float:left;}
+.commentlist li p{clear:both;}
+#maincontent .commentlist a{text-decoration: none;}
+#maincontent .commentlist .commentmetadata a{color:#767555;}
+#maincontent .commentlist .commentmetadata a:hover{text-decoration: underline;}
+/* End comments */
+
+/* Begin lightbox */
+.lightbox-overlay {
+	position: fixed;
+	top: 0; left: 0; right: 0; bottom: 0;
+	background: rgba(0,0,0,0.8);
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	z-index: 9999;
+	cursor: pointer;
+}
+.lightbox-overlay img {
+	max-width: 90vw;
+	max-height: 90vh;
+	border: 5px solid white;
+	box-shadow: 0 0 20px rgba(0,0,0,0.5);
+}
+.lightbox-close {
+	position: fixed;
+	top: 20px; right: 30px;
+	color: white;
+	font-size: 30px;
+	cursor: pointer;
+	z-index: 10000;
+	font-family: Arial, sans-serif;
+}
+/* End lightbox */
+
+/* Begin gallery */
+.gallery-grid {
+	display: flex;
+	flex-wrap: wrap;
+	gap: 10px;
+	justify-content: center;
+}
+.gallery-grid a {
+	display: block;
+	border: 2px solid #ddd;
+	padding: 3px;
+	background: #fff;
+}
+.gallery-grid a:hover {
+	border-color: #147;
+}
+.gallery-grid img {
+	display: block;
+	width: 150px;
+	height: 150px;
+	object-fit: cover;
+}
+/* End gallery */
+
+/* Begin pagination */
+.pagination-nav {
+	margin: 1em 0;
+}
+.pagination-nav .alignleft {
+	float: left;
+}
+.pagination-nav .alignright {
+	float: right;
+}
+/* End pagination */
+
+/* Begin archive listing */
+.archive-list {
+	list-style: none;
+	margin: 0;
+	padding: 0;
+}
+.archive-list li {
+	margin-bottom: 1.5em;
+	padding-bottom: 0.5em;
+	border-bottom: 1px solid #DCDBBF;
+}
+.archive-list li:last-child {
+	border-bottom: none;
+}
+.archive-list .post-date {
+	color: #767555;
+	font-size: 0.9em;
+}
+/* End archive listing */

@@ -1,0 +1,34 @@
+{{ define "main" }}
+{{ $comments := index (index hugo.Data "comments") (string .Params.wpid) | default slice }}
+<div class="post" id="post-{{ .Params.wpid | default 0 }}">
+	<h2><a href="{{ .RelPermalink }}" rel="bookmark" title="Permanent Link to {{ .Title }}">{{ .Title }}</a></h2>
+	<small>{{ .Date.Format "January 2, 2006" }} <!-- by {{ with .Params.authors }}{{ index . 0 }}{{ else }}{{ .Site.Title }}{{ end }} -->Posted in {{ range $i, $c := .Params.categories }}{{ if $i }}, {{ end }}<a href="{{ "categories/" | relURL }}{{ $c | urlize }}" rel="category tag">{{ $c | humanize | title }}</a>{{ end }} | {{ if $comments }}<a href="#comments">{{ len $comments }} Comment{{ if ne (len $comments) 1 }}s{{ end }}</a>{{ else }}<a href="#respond">No Comments &raquo;</a>{{ end }}</small>
+
+	<div class="entry">
+		{{ .Content }}
+	</div>
+
+	<p class="postmetadata"> </p>
+</div>
+
+{{ if $comments }}
+<div id="comments">
+	<h3>{{ len $comments }} Comment{{ if ne (len $comments) 1 }}s{{ end }}</h3>
+	<ol class="commentlist">
+		{{ range $comments }}
+		<li class="comment" id="comment-{{ .id }}">
+			<div class="comment-body">
+				<div class="comment-author">{{ .author }}</div>
+				<div class="comment-meta commentmetadata"><a href="#comment-{{ .id }}">{{ .date | dateFormat "January 2, 2006" }}</a></div>
+				<p>{{ .content | safeHTML }}</p>
+			</div>
+		</li>
+		{{ end }}
+	</ol>
+</div>
+{{ end }}
+
+<div id="respond">
+	<p class="postmetadata"> </p>
+</div>
+{{ end }}
