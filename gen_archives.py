@@ -43,7 +43,7 @@ def _write_year_index(year: int) -> None:
     year_dir: str = os.path.join(ARCHIVES_DIR, str(year))
     os.makedirs(year_dir, exist_ok=True)
     with open(os.path.join(year_dir, '_index.md'), 'w') as f:
-        f.write(f"""---
+        _ = f.write(f"""---
 title: "{year}"
 year: {year}
 ---
@@ -59,7 +59,7 @@ def _write_month_index(year: int, month: int) -> None:
     os.makedirs(month_dir, exist_ok=True)
     month_name: str = datetime(year, month, 1).strftime("%B %Y")
     with open(os.path.join(month_dir, '_index.md'), 'w') as f:
-        f.write(f"""---
+        _ = f.write(f"""---
 title: "{month_name}"
 year: {year}
 month: "{month:02d}"
