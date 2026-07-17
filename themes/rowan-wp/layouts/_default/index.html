@@ -3,7 +3,7 @@
 {{ $comments := index (index hugo.Data "comments") (string .Params.wpid) | default slice }}
 <div class="post" id="post-{{ .Params.wpid | default 0 }}">
 	<h2><a href="{{ .RelPermalink }}" rel="bookmark" title="Permanent Link to {{ .Title }}">{{ .Title }}</a></h2>
-	<small>{{ .Date.Format "January 2, 2006" }} <!-- by {{ with .Params.authors }}{{ index . 0 }}{{ else }}{{ .Site.Title }}{{ end }} -->Posted in {{ range $i, $c := .Params.categories }}{{ if $i }}, {{ end }}<a href="{{ "categories/" | relURL }}{{ $c | urlize }}" rel="category tag">{{ $c | humanize | title }}</a>{{ end }} | <a href="{{ .RelPermalink }}{{ if $comments }}#comments{{ else }}#respond{{ end }}">{{ if $comments }}{{ len $comments }} Comment{{ if ne (len $comments) 1 }}s{{ end }}{{ else }}No Comments</a>{{ end }} &raquo;</small>
+	<small>{{ .Date.Format "January 2, 2006" }} <!-- by {{ with .Params.authors }}{{ index . 0 }}{{ else }}{{ .Site.Title }}{{ end }} -->Posted in {{ range $i, $c := .Params.categories }}{{ if $i }}, {{ end }}<a href="{{ "categories/" | relURL }}{{ $c | urlize }}" rel="category tag">{{ $c | humanize | title }}</a>{{ end }} | <a href="{{ .RelPermalink }}{{ if $comments }}#comments{{ else }}#respond{{ end }}">{{ if $comments }}{{ len $comments }} Comment{{ if ne (len $comments) 1 }}s{{ end }}{{ else }}No Comments{{ end }}</a> &raquo;</small>
 
 	<div class="entry">
 		{{ .Content }}
