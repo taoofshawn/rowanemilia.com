@@ -1,8 +1,7 @@
 #!/usr/bin/env python3
 """
-Add explicit width and height attributes to <img> tags in HTML files.
-Handles minified HTML (Hugo --minify strips attribute quotes).
-Prevents Cumulative Layout Shift (CLS) by reserving image space.
+Add width/height attributes and descriptive alt text to <img> tags in Hugo-minified HTML.
+Prevents CLS (width/height) and fixes link-name accessibility (alt text).
 """
 
 import os
@@ -16,7 +15,6 @@ if not os.path.exists(STATIC_DIR):
     STATIC_DIR = os.path.join(os.getcwd(), 'static')
 
 def get_jpeg_size(filepath):
-    """Read JPEG dimensions from SOF0 marker."""
     with open(filepath, 'rb') as f:
         data = f.read(1024 * 10)
     i = 0
@@ -29,16 +27,11 @@ def get_jpeg_size(filepath):
     return None, None
 
 def get_png_size(filepath):
-    """Read PNG dimensions from IHDR chunk (starts at byte 16)."""
     with open(filepath, 'rb') as f:
-        f.read(8)   # PNG signature
-        f.read(4)   # chunk length
-        f.read(4)   # chunk type "IHDR"
-        data = f.read(8)  # width (4) + height (4)
+        f.read(8); f.read(4); f.read(4)
+        data = f.read(8)
         if len(data) >= 8:
-            w = struct.unpack('>I', data[0:4])[0]
-            h = struct.unpack('>I', data[4:8])[0]
-            return w, h
+            return struct.unpack('>I', data[0:4])[0], struct.unpack('>I', data[4:8])[0]
     return None, None
 
 def get_image_size(filepath):
@@ -54,36 +47,65 @@ def get_image_size(filepath):
 def resolve_image_path(src, html_path):
     if src.startswith('/'):
         return os.path.join(STATIC_DIR, src.lstrip('/'))
-    else:
-        return os.path.join(os.path.dirname(html_path), src)
+    return os.path.join(os.path.dirname(html_path), src)
 
-def add_dimensions_to_html(html_path):
+
+def alt_from_filename(src):
+    base = os.path.splitext(os.path.basename(src))[0]
+    base = re.sub(r'^\d{6,8}[-_]?', '', base)
+    base = re.sub(r'^(DSC|IMG|P)\d+[-_]?', '', base, flags=re.I)
+    base = re.sub(r'[-_]+', ' ', base)
+    base = base.strip()
+    return base[:80] if base else 'Photo'
+
+def process_html(html_path):
     with open(html_path, 'r', encoding='utf-8', errors='replace') as f:
         content = f.read()
 
     img_pat = re.compile(r'<img\s[^>]*>', re.IGNORECASE)
+    dirty = False
 
     def replace_img(match):
+        nonlocal dirty
         tag = match.group(0)
-        if re.search(r'\b(width|height)\s*=', tag, re.IGNORECASE):
-            return tag
+
+        # Extract src
         m = re.search(r'\bsrc\s*=\s*["\']?([^"\'\s>]+)["\']?', tag, re.IGNORECASE)
         if not m:
             return tag
         src = m.group(1)
-        img_path = resolve_image_path(src, html_path)
-        w, h = get_image_size(img_path)
-        if not w or not h:
-            return tag
-        insert = f' width="{w}" height="{h}"'
-        if tag.rstrip().endswith('/>'):
-            tag = tag.rstrip()[:-2] + insert + ' />'
-        elif tag.rstrip().endswith('>'):
-            tag = tag.rstrip()[:-1] + insert + '>'
+
+        # Fix empty/missing alt
+        alt_m = re.search(r'\balt\s*=\s*["\']?([^"\'\s>]*)', tag, re.IGNORECASE)
+        if alt_m:
+            if not alt_m.group(1):
+                tag = re.sub(r'\balt\s*=\s*["\']?[^"\'\s>]*', f'alt="{alt_from_filename(src)}"', tag)
+                dirty = True
+        else:
+            gen_alt = alt_from_filename(src)
+            insert = f' alt="{gen_alt}"'
+            tag = tag.rstrip()
+            if tag.endswith('/>'):
+                tag = tag[:-2] + insert + ' />'
+            elif tag.endswith('>'):
+                tag = tag[:-1] + insert + '>'
+            dirty = True
+
+        # Fix missing width/height
+        if not re.search(r'\b(width|height)\s*=', tag, re.IGNORECASE):
+            w, h = get_image_size(resolve_image_path(src, html_path))
+            if w and h:
+                dims = f' width="{w}" height="{h}"'
+                tag = tag.rstrip()
+                if tag.endswith('/>'):
+                    tag = tag[:-2] + dims + ' />'
+                elif tag.endswith('>'):
+                    tag = tag[:-1] + dims + '>'
+                dirty = True
         return tag
 
     new_content = img_pat.sub(replace_img, content)
-    if new_content != content:
+    if dirty:
         with open(html_path, 'w', encoding='utf-8') as f:
             f.write(new_content)
         return True
@@ -94,11 +116,9 @@ def main():
     for root, dirs, files in os.walk(PUBLIC_DIR):
         for fname in files:
             if fname.endswith('.html'):
-                path = os.path.join(root, fname)
-                if add_dimensions_to_html(path):
+                if process_html(os.path.join(root, fname)):
                     modified += 1
-                    rel = os.path.relpath(path, PUBLIC_DIR)
-                    print(f'  Augmented: {rel}')
+                    print(f'  Processed: {os.path.relpath(os.path.join(root, fname), PUBLIC_DIR)}')
     print(f'Modified {modified} HTML files')
 
 if __name__ == '__main__':
