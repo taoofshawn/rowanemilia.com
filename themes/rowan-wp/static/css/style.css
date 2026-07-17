@@ -57,7 +57,7 @@ small{font-size:1em;}
 #sidebar h2{text-transform:uppercase;font-size:1.1em;color:#A4573A;}
 #sidebar ul ul{margin-bottom:15px;}
 #sidebar ul ul li{margin-bottom:3px;}
-#sidebar ul ul li a{color:#555437;}
+#sidebar ul ul li a{color:#555437;display:inline-block;padding:8px 0;}
 #sidebar .current_page_item a {font-weight:bold;color:#333;}
 /* End sidebar */
 

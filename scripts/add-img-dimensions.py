@@ -75,13 +75,16 @@ def process_html(html_path):
             return tag
         src = m.group(1)
 
-        # Fix empty/missing alt
+        # Remove bare 'alt' (boolean attribute - Hugo minifies alt="" to alt)
+        tag = re.sub(r'\balt(?!\s*=)', '', tag).strip()
+        
+        # Fix empty or missing alt=
         alt_m = re.search(r'\balt\s*=\s*["\']?([^"\'\s>]*)', tag, re.IGNORECASE)
-        if alt_m:
-            if not alt_m.group(1):
-                tag = re.sub(r'\balt\s*=\s*["\']?[^"\'\s>]*', f'alt="{alt_from_filename(src)}"', tag)
-                dirty = True
+        if alt_m and alt_m.group(1):
+            pass  # already has a non-empty alt value, keep it
         else:
+            # Remove any existing empty alt= attribute
+            tag = re.sub(r'\balt\s*=\s*["\']?[^"\'\s>]*', '', tag)
             gen_alt = alt_from_filename(src)
             insert = f' alt="{gen_alt}"'
             tag = tag.rstrip()
