@@ -38,7 +38,7 @@ small{font-size:1em;}
 .bottomcorner{background: url(/img/bottomcorner.gif) no-repeat top center;height:12px;}
 .contentpadding{padding:0px 20px;}
 #maincontent a:hover{color:#3f4a4d;}
-#maincontent h2 a{color:#58573F;}
+#maincontent h2 a{color:#3D3C25;}
 .entry{margin-top:5px;overflow:hidden;}
 
 .entry p {margin-bottom:1em;}
@@ -57,7 +57,7 @@ small{font-size:1em;}
 #sidebar h2{text-transform:uppercase;font-size:1.1em;color:#A4573A;}
 #sidebar ul ul{margin-bottom:15px;}
 #sidebar ul ul li{margin-bottom:3px;}
-#sidebar ul ul li a{color:#767555;}
+#sidebar ul ul li a{color:#555437;}
 #sidebar .current_page_item a {font-weight:bold;color:#333;}
 /* End sidebar */
 

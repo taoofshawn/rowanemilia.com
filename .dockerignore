@@ -1,0 +1,12 @@
+.git/
+.gitignore
+README.md
+Dockerfile
+.dockerignore
+.prompt.md
+.spec.md
+.hugo_build.lock
+public/
+resources/
+*.pyc
+__pycache__/
